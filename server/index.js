@@ -29,7 +29,7 @@ const connect = () => {
 }
 
 // Configure CORS for both development and production
-const allowedOrigins = ['http://localhost:3000', 'http://localhost:3001'];
+const allowedOrigins = ['https://ensayo.online', 'https://www.ensayo.online', 'https://admin.ensayo.online'];
 
 app.use(cookieParser())
 app.use(express.json())
