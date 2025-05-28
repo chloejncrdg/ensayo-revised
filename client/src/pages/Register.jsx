@@ -59,7 +59,7 @@ const Register = () => {
       if (!email) formErrors.email = "Email is required";
       else if (!emailRegex.test(email)) formErrors.email = "Invalid email address";
 
-      const nameRegex = /^[\p{L}\p{M} ,.'-]{1,50}$/u;
+      const nameRegex = /^[\p{L}\p{M}0-9 ,.'-]{1,50}$/u;
       if (!firstName) formErrors.firstName = "First name is required";
       else if (!nameRegex.test(firstName)) formErrors.firstName = "Invalid first name";
 
