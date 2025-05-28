@@ -65,6 +65,7 @@ const Dashboard = () => {
         const endRange = Math.min(currentPage * 20, totalUsersCount);
         setQueryRange(`${startRange}-${endRange} out of ${totalUsersCount}`);
 
+        console.log(totalUsersCount);
 
       } catch (error) {
         console.error('Error fetching data:', error);
