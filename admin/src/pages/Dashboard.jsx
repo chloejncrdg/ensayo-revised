@@ -56,6 +56,7 @@ const Dashboard = () => {
 
         setUsers(sortedUsers);
         setOriginalUsers(sortedUsers);
+        setTotalUsers(totalUsersCount);
         setUsersWithCourses(usersWithCoursesCount);
 
         // Update total pages based on total users and per page count
@@ -153,7 +154,6 @@ const Dashboard = () => {
   return (
     <div className="p-8 bg-gray-100">
       <h1 className="text-2xl font-sf-bold mb-4 text-blue-800">Admin Dashboard</h1>
-      <p>{totalUsers}</p>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6 bg-white rounded-lg shadow p-6">
         <div className="bg-custom-blue rounded-lg shadow p-6 flex flex-col">
           <h2 className="text-lg font-sf-regular mb-1 text-white">TOTAL USERS</h2>
