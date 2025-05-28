@@ -178,20 +178,16 @@ const Dashboard = () => {
           <thead className='bg-custom-blue'>
             <tr className='font-sf-bold text-sm text-white'>
               <th className="px-4 py-2 border-b text-left">NAME</th>
-              <th className="px-4 py-2 border-b text-left">USERNAME</th>
-              <th className="px-4 py-2 border-b text-left">EMAIL</th>
               <th className="px-4 py-2 border-b text-left">ACTIONS</th>
             </tr>
           </thead>
           <tbody>
             {users.map(user => (
               <tr key={user._id} className="text-left border-b font-sf-regular text-gray-700">
-                <td className="px-4 py-2">{user.firstName} {user.lastName}</td>
-                <td className="px-4 py-2">{user.username}</td>
-                <td className="px-4 py-2">{user.email}</td>
+                <td className="px-4 py-2">{user.lastName}, {user.firstName}</td>
                 <td className="px-4 py-2">
                   <button
-                    className="bg-custom-blue hover:bg-blue-700 text-white font-sf-regular py-2 px-4 my-2 ml-5 text-sm rounded"
+                    className="bg-custom-blue hover:bg-blue-700 text-white font-sf-regular py-2 px-4 my-2 text-sm rounded"
                     onClick={() => openModal(user._id)}
                   >
                     VIEW
