@@ -15,6 +15,8 @@ import Charts from '../components/Charts.jsx';
 
 const Dashboard = () => {
   const [users, setUsers] = useState([]);
+  const [originalUsers, setOriginalUsers] = useState([]);
+  
   const [totalUsers, setTotalUsers] = useState(0);
   const [usersWithCourses, setUsersWithCourses] = useState(0);
   const [selectedUser, setSelectedUser] = useState(null);
@@ -29,6 +31,8 @@ const Dashboard = () => {
   const [courseEnrollments, setCourseEnrollments] = useState([]);
   const [monthlyRegistrations, setMonthlyRegistrations] = useState([]);
   const [completedUsers, setCompletedUsers] = useState([]);
+
+  const [sortMode, setSortMode] = useState('default');
 
 
   // State for search functionality
@@ -48,8 +52,10 @@ const Dashboard = () => {
           fetchUsersWithEnrolledCourses(),
         ]);
 
-        setUsers(allUsers.users);
-        setTotalUsers(totalUsersCount);
+        const sortedUsers = [...allUsers.users].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        setUsers(sortedUsers);
+        setOriginalUsers(sortedUsers);
         setUsersWithCourses(usersWithCoursesCount);
 
         // Update total pages based on total users and per page count
@@ -121,6 +127,28 @@ const Dashboard = () => {
     }
   };
 
+   const handleSortAZ = () => {
+    let newSortMode;
+    let sortedUsers;
+
+    if (sortMode === 'default') {
+      // Sort A–Z
+      sortedUsers = [...users].sort((a, b) => a.lastName.localeCompare(b.lastName));
+      newSortMode = 'asc';
+    } else if (sortMode === 'asc') {
+      // Sort Z–A
+      sortedUsers = [...users].sort((a, b) => b.lastName.localeCompare(a.lastName));
+      newSortMode = 'desc';
+    } else {
+      // Reset to default order
+      sortedUsers = [...originalUsers];
+      newSortMode = 'default';
+    }
+
+    setUsers(sortedUsers);
+    setSortMode(newSortMode);
+  };
+
   return (
     <div className="p-8 bg-gray-100">
       <h1 className="text-2xl font-sf-bold mb-4 text-blue-800">Admin Dashboard</h1>
@@ -146,14 +174,27 @@ const Dashboard = () => {
 
 
     <div className="flex justify-between mb-4 mt-12">
-        {/* Search input */}
-        <input
-          type="text"
-          placeholder="Search by name, username, or email"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="py-2 px-4 rounded font-sf-regular text-sm bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 w-96"
-        />
+    {/*Sort and Search input */}
+        <div>
+          <button
+            onClick={handleSortAZ}
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 font-sf-regular mr-4"
+          >
+            {sortMode === 'default' && 'Sort A–Z'}
+            {sortMode === 'asc' && 'Sort Z–A'}
+            {sortMode === 'desc' && 'Reset to default'}
+          </button>
+
+          <input
+            type="text"
+            placeholder="Search by name, username, or email"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="py-2 px-4 rounded font-sf-regular text-sm bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 w-96"
+          />
+
+        </div>
+      
         {/* Pagination controls */}
         <div>
           <button
@@ -178,6 +219,7 @@ const Dashboard = () => {
           <thead className='bg-custom-blue'>
             <tr className='font-sf-bold text-sm text-white'>
               <th className="px-4 py-2 border-b text-left">NAME</th>
+              <th className="px-4 py-2 border-b text-left">CREATED AT</th>
               <th className="px-4 py-2 border-b text-left">ACTIONS</th>
             </tr>
           </thead>
@@ -185,6 +227,7 @@ const Dashboard = () => {
             {users.map(user => (
               <tr key={user._id} className="text-left border-b font-sf-regular text-gray-700">
                 <td className="px-4 py-2">{user.lastName}, {user.firstName}</td>
+                <td className="px-4 py-2">{new Date(user.createdAt).toLocaleDateString()}</td>
                 <td className="px-4 py-2">
                   <button
                     className="bg-custom-blue hover:bg-blue-700 text-white font-sf-regular py-2 px-4 my-2 text-sm rounded"
